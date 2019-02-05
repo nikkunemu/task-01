@@ -1,25 +1,55 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task01
+namespace ConsoleApplication24
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            Program p = new Program();
+
+            bool menu = true;
+            while (menu == true)
+            {
+                p.MainMenu();
+                p.SwitchOP(p.number1);
+                p.SwitchOP1(p.number2);
+                p.operat(p.oper);
+                Console.ReadLine();
+            }
+        }
+        public bool MainMenu()
+        {
+            Console.Clear();
             Console.Write("Enter first number: ");
-            string number1 = Console.ReadLine();
+            number1 = Console.ReadLine();
 
             Console.Write("Enter second number: ");
-            string number2 = Console.ReadLine();
+            number2 = Console.ReadLine();
 
-            double intNum1 = 0;
-            double intNum2 = 0;
+            Console.Write("Enter operator: ");
+            oper = Console.ReadLine();
 
-            switch (number1)
+            return true;
+        }
+
+        public string number1 { get; set; }
+        public string number2 { get; set; }
+        public int intNum1 { get; set; }
+        public int intNum2 { get; set; }
+        public string oper { get; set; }
+
+        public enum Operator
+        {
+            plus, minus, multiply, divide
+        }
+        public void SwitchOP(string str)
+        {
+            switch (str)
             {
                 case "zero":
                     intNum1 = 0;
@@ -51,9 +81,14 @@ namespace Task01
                 case "nine":
                     intNum1 = 9;
                     break;
+                default:
+                    Console.WriteLine("Invalid first number. Please retry.");
+                    return;
             }
-
-            switch (number2)
+        }
+        public void SwitchOP1(string str)
+        {
+            switch (str)
             {
                 case "zero":
                     intNum2 = 0;
@@ -85,29 +120,55 @@ namespace Task01
                 case "nine":
                     intNum2 = 9;
                     break;
+                default:
+                    Console.WriteLine("Invalid second number. Please retry.");
+                    return;
             }
+        }
+        public int Calculate(int left, int right, Operator op)
+        {
+            switch (op)
+            {
+                case Operator.plus:
+                    return left + right;
 
-            Console.Write("Enter operator: ");
-            string operat = Console.ReadLine();
+                case Operator.minus:
+                    return left - right;
 
-            switch (operat)
+                case Operator.multiply:
+                    return left * right;
+
+                case Operator.divide:
+                    return left / right;
+
+                default:
+                    return 0;
+            }
+        }
+        public void operat(string str)
+        {
+            switch (str)
             {
                 case "+":
-                    Console.WriteLine("Result: {0} + {1} = {2}", intNum1, intNum2, intNum1 + intNum2);
+                    Console.WriteLine("Result: {0} + {1} = {2}", 
+                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.plus));
                     break;
                 case "-":
-                    Console.Write("Result: {0} - {1} = {2}", intNum1, intNum2, intNum1 - intNum2);
-                    break;
-                case "/":
-                    Console.Write("Result: {0} / {1} = {2}", intNum1, intNum2, intNum1 / intNum2);
+                    Console.WriteLine("Result: {0} - {1} = {2}",
+                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.minus));
                     break;
                 case "*":
-                    Console.Write("Result: {0} * {1} = {2}", intNum1, intNum2, intNum1 * intNum2);
+                    Console.WriteLine("Result: {0} * {1} = {2}",
+                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.multiply));
+                    break;
+                case "/":
+                    Console.WriteLine("Result: {0} / {1} = {2}",
+                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.divide));
+                    break;
+                default:
+                    Console.WriteLine("Invalid operator. Please retry.");
                     break;
             }
-
-
-            Console.ReadLine();
         }
     }
 }
