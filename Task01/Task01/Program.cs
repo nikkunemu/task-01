@@ -1,174 +1,158 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication24
+namespace ConsoleApplication2
 {
     class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            Program p = new Program();
-
-            bool menu = true;
-            while (menu == true)
+            string value;
+            do
             {
-                p.MainMenu();
-                p.SwitchOP(p.number1);
-                p.SwitchOP1(p.number2);
-                p.operat(p.oper);
-                Console.ReadLine();
-            }
+                string numberString1, numberString2, operatorString;
+                int numberInt1, numberInt2, result;
+
+                numberString1 = EnterFirstNumber();
+                numberString2 = EnterSecondNumber();
+                operatorString = EnterOperator();
+
+                numberInt1 = ConvertStringToInt(numberString1);
+                numberInt2 = ConvertStringToInt(numberString2);
+
+                result = Calculate(numberInt1, numberInt2, operatorString);
+                GetResultFormat(operatorString, numberInt1, numberInt2, result);
+
+                Console.Write("Please type exit to leave program, or any key to continue: ");
+                value = Console.ReadLine();
+
+            } while (value != "exit");
         }
-        public bool MainMenu()
+
+        public static string EnterFirstNumber()
         {
             Console.Clear();
             Console.Write("Enter first number: ");
-            number1 = Console.ReadLine();
-
+            string value = Console.ReadLine();
+            return value;
+        }
+        public static string EnterSecondNumber()
+        {
             Console.Write("Enter second number: ");
-            number2 = Console.ReadLine();
-
+            string value = Console.ReadLine();
+            return value;
+        }
+        public static string EnterOperator()
+        {
             Console.Write("Enter operator: ");
-            oper = Console.ReadLine();
-
-            return true;
+            string value = Console.ReadLine();
+            return value;
         }
-
-        public string number1 { get; set; }
-        public string number2 { get; set; }
-        public int intNum1 { get; set; }
-        public int intNum2 { get; set; }
-        public string oper { get; set; }
-
-        public enum Operator
+   
+        public static int ConvertStringToInt(string value)
         {
-            plus, minus, multiply, divide
-        }
-        public void SwitchOP(string str)
-        {
-            switch (str)
+            switch (value)
             {
                 case "zero":
-                    intNum1 = 0;
-                    break;
+                    return 0;
                 case "one":
-                    intNum1 = 1;
-                    break;
+                    return 1;
                 case "two":
-                    intNum1 = 2;
-                    break;
+                    return 2;
                 case "three":
-                    intNum1 = 3;
-                    break;
+                    return 3;
                 case "four":
-                    intNum1 = 4;
-                    break;
+                    return 4;
                 case "five":
-                    intNum1 = 5;
-                    break;
+                    return 5;
                 case "six":
-                    intNum1 = 6;
-                    break;
+                    return 6;
                 case "seven":
-                    intNum1 = 7;
-                    break;
+                    return 7;
                 case "eight":
-                    intNum1 = 8;
-                    break;
+                    return 8;
                 case "nine":
-                    intNum1 = 9;
-                    break;
+                    return 9;
                 default:
-                    Console.WriteLine("Invalid first number. Please retry.");
-                    return;
-            }
-        }
-        public void SwitchOP1(string str)
-        {
-            switch (str)
-            {
-                case "zero":
-                    intNum2 = 0;
-                    break;
-                case "one":
-                    intNum2 = 1;
-                    break;
-                case "two":
-                    intNum2 = 2;
-                    break;
-                case "three":
-                    intNum2 = 3;
-                    break;
-                case "four":
-                    intNum2 = 4;
-                    break;
-                case "five":
-                    intNum2 = 5;
-                    break;
-                case "six":
-                    intNum2 = 6;
-                    break;
-                case "seven":
-                    intNum2 = 7;
-                    break;
-                case "eight":
-                    intNum2 = 8;
-                    break;
-                case "nine":
-                    intNum2 = 9;
-                    break;
-                default:
-                    Console.WriteLine("Invalid second number. Please retry.");
-                    return;
-            }
-        }
-        public int Calculate(int left, int right, Operator op)
-        {
-            switch (op)
-            {
-                case Operator.plus:
-                    return left + right;
-
-                case Operator.minus:
-                    return left - right;
-
-                case Operator.multiply:
-                    return left * right;
-
-                case Operator.divide:
-                    return left / right;
-
-                default:
+                    Console.WriteLine("Invalid number. Please retry.");
                     return 0;
             }
         }
-        public void operat(string str)
+        public static int ConvertStringToOperator(int left, int right, Operator value)
         {
-            switch (str)
+
+            try
             {
-                case "+":
-                    Console.WriteLine("Result: {0} + {1} = {2}", 
-                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.plus));
-                    break;
+                if (value == Operator.Divide) if (right == 0)
+                    throw new DivideByZeroException("Division by zero is not allowed");
+                switch (value)
+                {
+                    case Operator.Plus:
+                        return left + right;
+
+                    case Operator.Minus:
+                        return left - right;
+
+                    case Operator.Multiply:
+                        return left * right;
+
+                    case Operator.Divide:
+                        return left / right;
+
+                    default:
+                        return 0;
+                }
+            }
+            catch (DivideByZeroException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return 0;
+        }
+        public static int Calculate(int left, int right, string value)
+        {
+                switch (value)
+                {
+                    case "+":
+                        return ConvertStringToOperator(left, right, Operator.Plus);
+                    case "-":
+                        return ConvertStringToOperator(left, right, Operator.Minus);
+                    case "*":
+                        return ConvertStringToOperator(left, right, Operator.Multiply);
+                    case "/":
+                        return ConvertStringToOperator(left, right, Operator.Divide);
+                    default:
+                        Console.WriteLine("Invalid operator. Please retry.");
+                        return 0;
+                }
+        }
+        public static void GetResultFormat(string value, int left, int right, int result)
+        {
+            switch (value)
+            {
                 case "-":
-                    Console.WriteLine("Result: {0} - {1} = {2}",
-                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.minus));
+                    Console.WriteLine("Result: {0} - {1} = {2}", left, right, result);
+                    break;
+                case "+":
+                    Console.WriteLine("Result: {0} + {1} = {2}", left, right, result);
                     break;
                 case "*":
-                    Console.WriteLine("Result: {0} * {1} = {2}",
-                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.multiply));
+                    Console.WriteLine("Result: {0} * {1} = {2}", left, right, result);
                     break;
                 case "/":
-                    Console.WriteLine("Result: {0} / {1} = {2}",
-                        intNum1, intNum2, Calculate(intNum1, intNum2, Operator.divide));
+                    Console.WriteLine("Result: {0} / {1} = {2}", left, right, result);
                     break;
                 default:
-                    Console.WriteLine("Invalid operator. Please retry.");
                     break;
             }
+        }
+        public enum Operator
+        {
+            Plus, Minus, Multiply, Divide
         }
     }
 }
